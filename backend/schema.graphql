@@ -30,10 +30,20 @@ type Message {
     deletedCount: Int
 }
 
+type MessageRes {
+    message: String
+}
+
 type Mutation {
     addFolder(name: String!): Folder
     addNote(content: String!, folderId: String!): Note
     updateNote(content: String!, id: String!): Note
     register(name: String!, uid: String!): Author
     deleteFolder(folderId: String!): Message
+    pushNotification(content: String!): MessageRes
+}
+
+type Subscription {
+    folderCreated: MessageRes
+    notification: MessageRes
 }

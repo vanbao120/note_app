@@ -13,6 +13,10 @@ const app = express();
 import 'dotenv/config'
 import '../firebaseConfig'
 import { getAuth } from 'firebase-admin/auth'
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
+
 const typeDefs = fs.readFileSync(path.join(process.cwd(), "schema.graphql"), {
     encoding: "utf-8",
 });
@@ -31,14 +35,33 @@ const authorizationJWT = async (req: any, res: any, next: any) => {
         }
         )
     } else {
-        return res.status(401).json({ message: 'Unauthorized' })
+        next()
+        // return res.status(401).json({ message: 'Unauthorized' })
     }
 }
 const httpServer = http.createServer(app);
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+// Creating the WebSocket server
+const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: '/',
+});
+
+const serverCleanup = useServer({ schema }, wsServer);
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    schema,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer }),
+    {
+        async serverWillStart() {
+            return {
+                async drainServer() {
+                    await serverCleanup.dispose();
+                },
+            };
+        },
+    },
+    ],
 })
     ; (async () => {
         await server.start()

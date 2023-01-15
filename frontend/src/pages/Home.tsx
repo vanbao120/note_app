@@ -2,6 +2,7 @@ import { Box, Grid, Typography } from '@mui/material'
 import React from 'react'
 import { Outlet, useLoaderData } from 'react-router-dom'
 import FolderList from '../components/FolderList'
+import PushNotification from '../components/PushNotification'
 import UserMenu from '../components/UserMenu'
 
 type Props = {}
@@ -16,7 +17,7 @@ const Home = (props: Props) => {
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'right', mb: '10px' }}>
                 <UserMenu />
-                {/* <PushNotification /> */}
+                <PushNotification />
             </Box>
             <Grid
                 container
