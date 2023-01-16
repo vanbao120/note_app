@@ -1,6 +1,8 @@
+import { GRAPHQL_SERVER } from "../utils/constants"
+
 export async function callApi({ body }: { body: string }) {
     if (!localStorage.getItem('accessToken')) return null
-    const res = await fetch('http://localhost:4000/graphql', {
+    const res = await fetch(GRAPHQL_SERVER, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

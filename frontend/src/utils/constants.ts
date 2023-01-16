@@ -1,1 +1,2 @@
-export const GRAPHQL_SUBSCRIPTION_ENDPOINT = 'ws://localhost:4000';
+export const GRAPHQL_SUBSCRIPTION_ENDPOINT = 'ws://note-app-server-eznl.onrender.com';
+export const GRAPHQL_SERVER = 'https://note-app-server-eznl.onrender.com';
