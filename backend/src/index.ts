@@ -35,8 +35,7 @@ const authorizationJWT = async (req: any, res: any, next: any) => {
         }
         )
     } else {
-        next()
-        // return res.status(401).json({ message: 'Unauthorized' })
+        return res.status(401).json({ message: 'Unauthorized' })
     }
 }
 const httpServer = http.createServer(app);
